@@ -3,8 +3,11 @@ package com.veinhorn.scrollgalleryview.loader.picasso;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import androidx.annotation.NonNull;
+
+
+import com.squareup.picasso3.Callback;
+import com.squareup.picasso3.Picasso;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
 
 /**
@@ -33,19 +36,19 @@ public class PicassoImageLoader implements MediaLoader {
 
     @Override
     public void loadMedia(Context context, final ImageView imageView, final MediaLoader.SuccessCallback callback) {
-        Picasso.get()
+        new Picasso.Builder(context).build()
                 .load(url)
-                .placeholder(R.drawable.placeholder_image)
+                .placeholder(com.veinhorn.scrollgalleryview.R.drawable.placeholder_image)
                 .into(imageView, new ImageCallback(callback));
     }
 
     @Override
     public void loadThumbnail(Context context, final ImageView thumbnailView, final MediaLoader.SuccessCallback callback) {
-        Picasso.get()
+        new Picasso.Builder(context).build()
                 .load(url)
                 .resize(thumbnailWidth == null ? 100 : thumbnailWidth,
                         thumbnailHeight == null ? 100 : thumbnailHeight)
-                .placeholder(R.drawable.placeholder_image)
+                .placeholder(com.veinhorn.scrollgalleryview.R.drawable.placeholder_image)
                 .centerInside()
                 .into(thumbnailView, new ImageCallback(callback));
     }
@@ -61,7 +64,9 @@ public class PicassoImageLoader implements MediaLoader {
             callback.onSuccess();
         }
 
-        @Override public void onError(Exception e) {
+        @Override
+        public void onError(@NonNull Throwable throwable) {
+
         }
     }
 }
