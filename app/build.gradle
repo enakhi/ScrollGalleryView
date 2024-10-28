@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'maven-publish'
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.veinhorn.scrollgalleryview"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 8
         versionName "1.1.0"
+        multiDexEnabled true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -23,17 +24,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures{
+        viewBinding true
+    }
+    namespace 'com.veinhorn.example'
+    configurations.all {
+        // Exclude old support library dependencies
+        exclude group: 'com.android.support'
+        resolutionStrategy {
+            // Force use of AndroidX core
+            force "androidx.appcompat:appcompat:1.7.0"
+        }
+    }
 }
 
 dependencies {
+    def lifecycle_version = "2.8.6"  // Use the latest version
 
+    // AndroidX Lifecycle components
+    implementation "androidx.multidex:multidex:2.0.1"
     implementation project(':library')
-    implementation project(':picasso-loader')
+    implementation project(':glide-loader')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'org.jsoup:jsoup:1.11.2'
-    implementation 'com.jakewharton:butterknife:10.2.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
-    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
-
-    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'org.jsoup:jsoup:1.18.1'
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
 }

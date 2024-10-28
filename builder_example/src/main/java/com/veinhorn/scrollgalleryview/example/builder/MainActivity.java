@@ -1,5 +1,8 @@
 package com.veinhorn.scrollgalleryview.example.builder;
 
+import static ogbe.ozioma.com.glideimageloader.dsl.DSL.images;
+import static ogbe.ozioma.com.glideimageloader.dsl.DSL.video;
+
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -8,7 +11,6 @@ import androidx.fragment.app.FragmentActivity;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
 import com.veinhorn.scrollgalleryview.builder.GallerySettings;
 
-import static com.veinhorn.scrollgalleryview.loader.picasso.dsl.DSL.*;
 
 public class MainActivity extends FragmentActivity {
     private ScrollGalleryView galleryView;
@@ -40,10 +42,10 @@ public class MainActivity extends FragmentActivity {
                     }
                 })
                 .add(images(
-                        "http://pirate-islands.com/wp-content/uploads/2018/07/07_Dom-Fernando-II_01-636x310.jpg",
-                        "http://povodu.ru/wp-content/uploads/2016/04/pochemu-korabl-derzitsa-na-vode.jpg"
+                        "https://images.freeimages.com/images/large-previews/56d/peacock-1169961.jpg",
+                        "https://images.freeimages.com/images/large-previews/866/butterfly-1-1535829.jpg"
                 ))
-                .add(video("http://www.sample-videos.com/video/mp4/720/big_buck_bunny_720p_1mb.mp4", R.mipmap.default_video))
+                .add(video("https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_30MB.mp4", R.mipmap.default_video))
                 .build();
     }
 }

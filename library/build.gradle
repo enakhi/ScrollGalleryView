@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'maven-publish'
 android {
 
-    compileSdkVersion 29
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 15
         versionName "1.2.8"
     }
@@ -21,14 +21,63 @@ android {
     lintOptions {
         abortOnError false
     }
+    namespace 'com.veinhorn.scrollgalleryview'
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+    configurations.all {
+        // Exclude old support library dependencies
+        exclude group: 'com.android.support'
+        resolutionStrategy {
+            // Force use of AndroidX core
+            force "androidx.appcompat:appcompat:1.7.0"
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'com.enakhi.ScrollGalleryView'
+                artifactId = project.getName()
+                version = '1.1.5'
+
+                pom {
+                    name = project.getName()
+                    description = 'Android Library' // You can customize this
+                    url = 'https://github.com/enakhi/' + project.getName()
+
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id = 'enakhi'
+                            name = 'enakhi'
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 dependencies {
 
     api fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.chrisbanes:PhotoView:462338'
 
-    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'com.google.android.material:material:1.12.0'
 }
 
 ext {
@@ -36,7 +85,7 @@ ext {
     bintrayName = 'scroll-gallery-view'
 
     publishedGroupId = 'com.veinhorn.scrollgalleryview'
-    libraryName = 'ScrollGalleryView'
+    libraryName = 'ScrollG  alleryView'
     artifact = 'library'
 
     libraryDescription = 'Create awesome image gallery using ScrollGalleryView. Just add your images.'
@@ -55,5 +104,5 @@ ext {
     allLicenses = ["The MIT License"]
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'

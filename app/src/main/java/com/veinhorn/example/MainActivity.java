@@ -7,11 +7,11 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.github.ybq.android.spinkit.SpinKitView;
+
 import com.github.ybq.android.spinkit.style.Wave;
+import com.veinhorn.example.databinding.ActivityMainBinding;
 import com.veinhorn.scrollgalleryview.MediaInfo;
-import com.veinhorn.scrollgalleryview.ScrollGalleryView;
-import com.veinhorn.scrollgalleryview.loader.picasso.PicassoImageLoader;
+
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -22,23 +22,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import ogbe.ozioma.com.glideimageloader.GlideImageLoader;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.scroll_gallery_view)
-    protected ScrollGalleryView scrollGalleryView;
+    ActivityMainBinding binding;
 
-    @BindView(R.id.spin_kit)
-    protected SpinKitView progressBar;
+
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        scrollGalleryView
+
+        binding.scrollGalleryView
                 .setThumbnailSize(200)
                 .setZoom(true)
                 .withHiddenThumbnails(false)
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 .setFragmentManager(getSupportFragmentManager());
 
         Wave wave = new Wave();
-        progressBar.setIndeterminateDrawable(wave);
+        binding.spinKit.setIndeterminateDrawable(wave);
 
         ImagesFetcher fetcher = new ImagesFetcher();
         fetcher.execute();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
+            binding.spinKit.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<String> imageUrls) {
-            progressBar.setVisibility(View.INVISIBLE);
+            binding.spinKit.setVisibility(View.INVISIBLE);
 
             for (String imageUrl : imageUrls) {
-                scrollGalleryView.addMedia(
-                        MediaInfo.mediaLoader(new PicassoImageLoader(imageUrl))
+                binding.scrollGalleryView.addMedia(
+                        MediaInfo.mediaLoader(new GlideImageLoader(imageUrl))
                 );
             }
         }
